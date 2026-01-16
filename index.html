@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Payal Rana | Portfolio</title>
+
+  <!-- SEO Basics -->
+  <meta name="description" content="Payal Rana Portfolio - BCA Final Year student skilled in Data Science, Analytics and Web Development.">
+  <meta name="author" content="Payal Rana">
+
+  <style>
+    /* ===== RESET ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fdfaf6;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: relative;
+      background: linear-gradient(135deg, #607d8b, #f5f0e1);
+      padding: 70px 20px 50px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #2c3e50;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    nav {
+      margin-top: 25px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      font-weight: bold;
+      color: #2c3e50;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #0073e6;
+    }
+
+    /* ===== PROFILE PHOTO (TOP RIGHT CIRCLE) ===== */
+    .profile-pic {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #ffffff;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+      background-color: #fff;
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #2c3e50;
+      border-left: 5px solid #607d8b;
+      padding-left: 12px;
+    }
+
+    /* ===== ABOUT ===== */
+    #about p {
+      margin-bottom: 15px;
+      font-size: 1.05rem;
+    }
+
+    /* ===== EDUCATION ===== */
+    #education ul {
+      list-style: square;
+      padding-left: 20px;
+    }
+
+    #education li {
+      margin-bottom: 12px;
+    }
+
+    /* ===== SKILLS ===== */
+    #skills ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+
+    #skills li {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    #skills li:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    /* ===== PROJECTS ===== */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: #ffffff;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .project-card h3 {
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    /* ===== BUTTON ===== */
+    .btn {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 12px 24px;
+      background-color: #607d8b;
+      color: #ffffff;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #2c3e50;
+    }
+
+    /* ===== CONTACT ===== */
+    #contact p {
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background-color: #2c3e50;
+      color: #fdfaf6;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .profile-pic {
+        position: static;
+        display: block;
+        margin: 0 auto 20px;
+      }
+
+      header {
+        padding-top: 40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <!-- PROFILE PHOTO -->
+  <img src="C:\Users\itspa\OneDrive\Desktop\profile.jpg" alt="Payal Rana" class="profile-pic">
+
+  <h1>Payal Rana</h1>
+  <p>BCA Final Year Student | Data Science & Analytics Enthusiast | Web Development Learner</p>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#education">Education</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="about">
+  <h2>About Me</h2>
+  <p>
+    Hi, I’m <strong>Payal Rana</strong>, a final year BCA student with a strong interest in Data Science,
+    Analytics, and Web Development. I enjoy working with data to extract insights and building clean,
+    functional web interfaces.
+  </p>
+  <p>
+    I am detail-oriented, eager to learn, and focused on improving my technical skills through
+    real-world projects. My aim is to gain industry experience and contribute meaningfully to
+    data-driven and software development teams.
+  </p>
+</section>
+
+<section id="education">
+  <h2>Education</h2>
+  <ul>
+    <li>
+      <strong>Bachelor of Computer Applications (BCA)</strong><br>
+      Dyal Singh College, Karnal (2023 - 2026, Final Year)
+    </li>
+    <li>
+      <strong>Key Subjects:</strong> Data Science Fundamentals, DBMS, Web Development,
+      Software Testing, Programming Languages, Cloud Computing
+    </li>
+  </ul>
+</section>
+
+<section id="skills">
+  <h2>Technical Skills</h2>
+  <ul>
+    <li>Python, Java, C</li>
+    <li>Data Analysis: Pandas, NumPy, Matplotlib, Seaborn</li>
+    <li>Databases: MySQL</li>
+    <li>Web Technologies: HTML, CSS, JavaScript</li>
+    <li>Tools: Git & GitHub, MS Excel, PowerPoint</li>
+  </ul>
+</section>
+
+<section id="projects">
+  <h2>Projects</h2>
+
+  <div class="projects">
+    <div class="project-card">
+      <h3>Flight Delay Analysis</h3>
+      <p>
+        Analyzed real-world flight datasets using Python and Pandas. Cleaned and processed data to
+        identify delay trends. Visualized insights using Matplotlib and Seaborn.
+      </p>
+    </div>
+
+    <div class="project-card">
+      <h3>Student Record Management System</h3>
+      <p>
+        Developed a Java and MySQL-based system implementing CRUD operations to manage student records,
+        gaining experience in backend logic and database connectivity.
+      </p>
+    </div>
+
+    <div class="project-card">
+      <h3>Personal Portfolio Website</h3>
+      <p>
+        Designed and developed a responsive portfolio using HTML and CSS to showcase skills, projects,
+        and professional details.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:payalsinghrajpoot09@gmail.com">payalsinghrajpoot09@gmail.com</a></p>
+  <p>
+    LinkedIn:
+    <a href="https://www.linkedin.com/in/rana-payal143" target="_blank">
+      linkedin.com/in/rana-payal143
+    </a>
+  </p>
+
+  <!-- RESUME DOWNLOAD -->
+  <a class="btn" href="resume.pdf" download>Download Resume</a>
+</section>
+
+<footer>
+  © 2025 Payal Rana | Turning ideas into impact
+</footer>
+
+</body>
+</html>
