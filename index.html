@@ -1,352 +1,1022 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Payal Rana | Portfolio</title>
 
-  <!-- SEO Basics -->
-  <meta name="description" content="Payal Rana Portfolio - BCA Final Year student skilled in Data Science, Analytics and Web Development.">
-  <meta name="author" content="Payal Rana">
+  <meta name="description" content="Payal Rana Portfolio - BCA Final Year | Data Science, Big Data (Spark), Web Development." />
+  <meta name="author" content="Payal Rana" />
 
   <style>
     /* ===== RESET ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #fdfaf6;
-      color: #333;
-      line-height: 1.6;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #fdfaf6;
+      color: #222;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    :root{
+      --ink:#22313f;
+      --muted:#546e7a;
+      --accent:#607d8b;
+      --accent2:#2c3e50;
+      --card:#ffffff;
+      --shadow: 0 10px 30px rgba(0,0,0,0.10);
+      --shadow2: 0 14px 40px rgba(0,0,0,0.14);
+      --radius: 16px;
+      --max: 1050px;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    /* ===== TOP PROGRESS BAR ===== */
+    #progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 4px;
+      width: 0%;
+      background: var(--accent2);
+      z-index: 99999;
+      transition: width .08s linear;
     }
 
     /* ===== HEADER ===== */
     header {
       position: relative;
-      background: linear-gradient(135deg, #607d8b, #f5f0e1);
-      padding: 70px 20px 50px;
-      text-align: center;
-      border-bottom: 1px solid #ccc;
+      min-height: 78vh;
+      display: grid;
+      place-items: center;
+      padding: 70px 20px 30px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(96,125,139,0.35), transparent 60%),
+                  radial-gradient(900px 500px at 90% 30%, rgba(44,62,80,0.22), transparent 55%),
+                  linear-gradient(135deg, #f5f0e1, #fdfaf6);
+      overflow: hidden;
     }
-
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-      color: #2c3e50;
+    /* floating blobs */
+    .blob {
+      position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      filter: blur(28px);
+      opacity: .35;
+      transform: translate3d(0,0,0);
+      pointer-events: none;
     }
+    .blob.b1 { background: #607d8b; top:-120px; left:-140px; }
+    .blob.b2 { background: #2c3e50; bottom:-160px; right:-160px; opacity:.25; }
 
-    header p {
-      font-size: 1.1rem;
-      color: #2c3e50;
-      max-width: 800px;
+    .wrap {
+      width: 100%;
+      max-width: var(--max);
       margin: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* nav bar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      backdrop-filter: blur(10px);
+      background: rgba(253,250,246,0.78);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .topbar .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      gap: 14px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: .2px;
+    }
+    .brand .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 0 6px rgba(44,62,80,0.12);
     }
 
     nav {
-      margin-top: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
     }
-
     nav a {
-      margin: 0 15px;
-      font-weight: bold;
-      color: #2c3e50;
-      transition: 0.3s;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: var(--ink);
+      transition: .25s;
+      font-size: .95rem;
+      opacity: .95;
+    }
+    nav a:hover { background: rgba(96,125,139,0.12); }
+    nav a.active {
+      background: rgba(44,62,80,0.12);
+      color: var(--accent2);
+      outline: 1px solid rgba(44,62,80,0.18);
     }
 
-    nav a:hover {
-      color: #0073e6;
+    /* hero */
+    .hero {
+      text-align: left;
+      padding: 40px 20px 18px;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 22px;
+      align-items: center;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      color: var(--ink);
+      line-height: 1.12;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .hero .subtitle {
+      color: var(--muted);
+      font-size: 1.06rem;
+      max-width: 62ch;
+      margin-bottom: 18px;
+    }
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0 18px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+      font-weight: 700;
+      color: #2b3b47;
+      font-size: .92rem;
+    }
+    .badge span {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
     }
 
-    /* ===== PROFILE PHOTO (TOP RIGHT CIRCLE) ===== */
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 800;
+      background: var(--accent2);
+      color: #fff;
+      box-shadow: var(--shadow);
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow2);
+      background: #1f2f3f;
+    }
+    .btn.secondary {
+      background: rgba(96,125,139,0.16);
+      color: var(--accent2);
+      box-shadow: none;
+      outline: 1px solid rgba(96,125,139,0.22);
+    }
+    .btn.secondary:hover {
+      background: rgba(96,125,139,0.22);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+    }
+
+    /* profile photo top right (resume style) */
     .profile-pic {
-      position: absolute;
-      top: 25px;
-      right: 25px;
-      width: 140px;
-      height: 140px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid #ffffff;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-      background-color: #fff;
+      border: 5px solid rgba(255,255,255,0.9);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+      justify-self: end;
+      align-self: start;
+      margin-top: 10px;
+      background: #fff;
+      transform: translateZ(0);
     }
+    .hero-right {
+      display: grid;
+      justify-items: end;
+      gap: 14px;
+      position: relative;
+    }
+    .mini-card {
+      width: min(340px, 100%);
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .mini-card h4 { color: var(--ink); margin-bottom: 6px; }
+    .mini-card p { color: var(--muted); font-size: .96rem; }
 
     /* ===== SECTIONS ===== */
     section {
-      padding: 60px 20px;
-      max-width: 1000px;
+      padding: 70px 20px;
+    }
+    .section-wrap {
+      max-width: var(--max);
       margin: auto;
     }
-
     h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: #2c3e50;
-      border-left: 5px solid #607d8b;
-      padding-left: 12px;
+      font-size: clamp(1.7rem, 2.2vw, 2.2rem);
+      color: var(--ink);
+      margin-bottom: 14px;
+      letter-spacing: -0.2px;
     }
-
-    /* ===== ABOUT ===== */
-    #about p {
-      margin-bottom: 15px;
+    .section-sub {
+      color: var(--muted);
+      max-width: 70ch;
+      margin-bottom: 26px;
       font-size: 1.05rem;
     }
 
-    /* ===== EDUCATION ===== */
-    #education ul {
-      list-style: square;
-      padding-left: 20px;
+    /* ===== REVEAL ANIMATIONS (SIDE ENTRY) ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateX(70px);
+      transition: opacity .7s ease, transform .7s ease;
+      will-change: transform, opacity;
     }
+    .reveal.left { transform: translateX(-70px); }
+    .reveal.up { transform: translateY(40px); }
+    .reveal.show { opacity: 1; transform: translateX(0) translateY(0); }
 
-    #education li {
-      margin-bottom: 12px;
+    /* ===== CARDS / GRID ===== */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
     }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 20px;
+    }
+    .card h3 { color: var(--ink); margin-bottom: 8px; }
+    .card p, .card li { color: #2b3b47; }
+    .muted { color: var(--muted); }
+
+    /* ===== EDUCATION LIST ===== */
+    .edu li { margin: 10px 0; }
+    .edu strong { color: var(--ink); }
 
     /* ===== SKILLS ===== */
-    #skills ul {
+    .skills {
       list-style: none;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
     }
-
-    #skills li {
-      background: #ffffff;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: 0.3s;
+    .skill {
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 14px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
+      user-select: none;
     }
-
-    #skills li:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    .skill:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(0,0,0,0.10); }
+    .skill .tag {
+      font-size: .82rem;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(96,125,139,0.14);
+      color: var(--accent2);
+      border: 1px solid rgba(96,125,139,0.22);
+      white-space: nowrap;
     }
 
     /* ===== PROJECTS ===== */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+    }
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.75);
+      cursor: pointer;
+      transition: .2s;
+    }
+    .chip:hover { transform: translateY(-2px); }
+    .chip.active {
+      background: rgba(44,62,80,0.14);
+      border-color: rgba(44,62,80,0.22);
+      color: var(--accent2);
+    }
+
     .projects {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      gap: 16px;
     }
-
-    .project-card {
-      background: #ffffff;
-      padding: 22px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: 0.3s;
+    .project {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      position: relative;
+      overflow: hidden;
     }
-
-    .project-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    .project:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow2);
     }
-
-    .project-card h3 {
-      margin-bottom: 10px;
-      color: #2c3e50;
+    .project h3 { color: var(--ink); margin-bottom: 8px; }
+    .project p { color: #2b3b47; margin-bottom: 10px; }
+    .pillrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
     }
-
-    /* ===== BUTTON ===== */
-    .btn {
-      display: inline-block;
-      margin-top: 18px;
-      padding: 12px 24px;
-      background-color: #607d8b;
-      color: #ffffff;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: 0.3s;
+    .pill {
+      font-size: .78rem;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.06);
+      color: #2b3b47;
     }
-
-    .btn:hover {
-      background-color: #2c3e50;
+    .project .cat {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: .78rem;
+      font-weight: 900;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(96,125,139,0.14);
+      border: 1px solid rgba(96,125,139,0.22);
+      color: var(--accent2);
     }
 
     /* ===== CONTACT ===== */
-    #contact p {
-      margin-bottom: 10px;
-      font-size: 1.05rem;
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
+    .contact-grid a { color: var(--accent2); font-weight: 800; }
+    .small { font-size: .92rem; }
 
-    /* ===== FOOTER ===== */
-    footer {
-      background-color: #2c3e50;
-      color: #fdfaf6;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-      font-size: 0.9rem;
+    /* ===== MODAL ===== */
+    #modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.62);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .modal-card {
+      width: min(720px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 22px 70px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.16);
+      overflow: hidden;
+      transform: translateY(10px);
+      animation: pop .18s ease forwards;
+    }
+    @keyframes pop { to { transform: translateY(0); } }
+    .modal-head {
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(96,125,139,0.22), rgba(44,62,80,0.12));
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .modal-head h3 { color: var(--ink); }
+    .modal-close {
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 900;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid rgba(0,0,0,0.08);
+      user-select: none;
+    }
+    .modal-body {
+      padding: 18px 20px 22px;
+      color: #2b3b47;
+    }
+    .modal-body .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0 16px;
+    }
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .linkbtn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 900;
+      border: 1px solid rgba(0,0,0,0.10);
+      background: rgba(255,255,255,0.85);
+      cursor: pointer;
+      transition: .2s;
+    }
+    .linkbtn.primary {
+      background: var(--accent2);
+      color: #fff;
+      border-color: rgba(44,62,80,0.35);
+    }
+    .linkbtn:hover { transform: translateY(-2px); }
+
+    /* ===== BACK TO TOP ===== */
+    #toTop {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: .2s;
+    }
+    #toTop.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
     }
 
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .profile-pic {
-        position: static;
-        display: block;
-        margin: 0 auto 20px;
-      }
-
-      header {
-        padding-top: 40px;
-      }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: left; }
+      .hero-right { justify-items: start; }
+      .profile-pic { justify-self: start; }
+      .grid-2, .contact-grid { grid-template-columns: 1fr; }
+      nav { justify-content: flex-end; }
+    }
+    @media (max-width: 560px){
+      nav a { padding: 8px 10px; font-size: .9rem; }
+      .topbar .wrap { padding: 10px 14px; }
+      .hero { padding: 26px 14px 10px; }
+      section { padding: 58px 14px; }
     }
   </style>
 </head>
 
 <body>
+  <div id="progress"></div>
 
-<header>
-  <!-- PROFILE PHOTO -->
-  <img src="profile.jpg" alt="Payal Rana" class="profile-pic">
-
-  <h1>Payal Rana</h1>
-  <p>BCA Final Year Student | Data Science & Analytics Enthusiast | Web Development Learner</p>
-
-  <nav>
-    <a href="#about">About</a>
-    <a href="#education">Education</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
-
-<section id="about">
-  <h2>About Me</h2>
-  <p>
-    Hi, I’m <strong>Payal Rana</strong>, a final year BCA student with a strong interest in Data Science,
-    Analytics, and Web Development. I enjoy working with data to extract insights and building clean,
-    functional web interfaces.
-  </p>
-  <p>
-    I am detail-oriented, eager to learn, and focused on improving my technical skills through
-    real-world projects. My aim is to gain industry experience and contribute meaningfully to
-    data-driven and software development teams.
-  </p>
-</section>
-
-<section id="education">
-  <h2>Education</h2>
-  <ul>
-    <li>
-      <strong>Bachelor of Computer Applications (BCA)</strong><br>
-      Dyal Singh College, Karnal (2023 - 2026, Final Year)
-    </li>
-    <li>
-      <strong>Key Subjects:</strong> Data Science Fundamentals, DBMS, Web Development,
-      Software Testing, Programming Languages, Cloud Computing
-    </li>
-  </ul>
-</section>
-
-<section id="skills">
-  <h2>Technical Skills</h2>
-  <ul>
-    <li>Python, Java, C</li>
-    <li>Data Analysis: Pandas, NumPy, Matplotlib, Seaborn</li>
-    <li>Databases: MySQL</li>
-    <li>Web Technologies: HTML, CSS, JavaScript</li>
-    <li>Tools: Git & GitHub, MS Excel, PowerPoint</li>
-  </ul>
-</section>
-
-<section id="projects">
-  <h2>Projects</h2>
-
-  <div class="projects">
-    <div class="project-card">
-      <h3>Flight Delay Analysis</h3>
-      <p>
-        Analyzed real-world flight datasets using Python and Pandas. Cleaned and processed data to
-        identify delay trends. Visualized insights using Matplotlib and Seaborn.
-      </p>
-    </div>
-
-    <div class="project-card">
-      <h3>Student Record Management System</h3>
-      <p>
-        Developed a Java and MySQL-based system implementing CRUD operations to manage student records,
-        gaining experience in backend logic and database connectivity.
-      </p>
-    </div>
-
-    <div class="project-card">
-      <h3>Personal Portfolio Website</h3>
-      <p>
-        Designed and developed a responsive portfolio using HTML and CSS to showcase skills, projects,
-        and professional details.
-      </p>
+  <!-- Sticky Topbar -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Payal Rana</span>
+      </div>
+      <nav id="nav">
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </div>
   </div>
-</section>
 
-<section id="contact">
-  <h2>Contact</h2>
-  <p>Email: <a href="mailto:payalsinghrajpoot09@gmail.com">payalsinghrajpoot09@gmail.com</a></p>
-  <p>
-    LinkedIn:
-    <a href="https://www.linkedin.com/in/rana-payal143" target="_blank">
-      linkedin.com/in/rana-payal143
-    </a>
-  </p>
+  <header id="home">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
 
-  <!-- RESUME DOWNLOAD -->
-  <a class="btn" href="resume.pdf" download>Download Resume</a>
-</section>
+    <div class="wrap">
+      <div class="hero">
+        <div class="hero-left">
+          <h1 class="reveal left">Data • Big Data • Web - all in one portfolio.</h1>
+          <p class="subtitle reveal left">
+            I’m <b>Payal Rana</b>, a BCA final year student focused on <b>Data Science</b>, <b>Big Data (Spark)</b>,
+            and <b>Web Development</b>. I build analysis that shows real insights, not just buzzwords.
+          </p>
 
-<footer>
-  © 2025 Payal Rana | Turning ideas into impact
-</footer>
+          <div class="badges reveal up">
+            <div class="badge"><span></span> Python / Pandas / NumPy</div>
+            <div class="badge"><span></span> Spark / Big Data</div>
+            <div class="badge"><span></span> HTML / CSS / JavaScript</div>
+          </div>
 
-  <!-- JS Script -->
-<script>
-  // Smooth scroll, button pulse, project card highlight
-  document.querySelectorAll('nav a').forEach(link => {
-    link.addEventListener('click', function(e){
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      target.scrollIntoView({ behavior: 'smooth' });
+          <div class="cta reveal up">
+            <a class="btn" href="resume.pdf" download>Download Resume</a>
+            <button class="btn secondary" id="viewHighlights">View Highlights</button>
+          </div>
+        </div>
+
+        <div class="hero-right reveal up">
+          <!-- profile -->
+          <img src="profile.jpg" alt="Payal Rana" class="profile-pic" />
+
+          <div class="mini-card">
+            <h4>Quick Summary</h4>
+            <p class="muted">
+              Data analysis projects with clear questions + answers, plus Spark-based big data workflows.
+              Click projects/skills to open details.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-wrap">
+      <h2 class="reveal left">About Me</h2>
+      <p class="section-sub reveal left">
+        I like turning messy data into clear insights. I prefer projects where I can show the full story:
+        question → cleaning → analysis → visualization → conclusion.
+      </p>
+
+      <div class="grid-2">
+        <div class="card reveal left">
+          <h3>What I’m good at</h3>
+          <ul class="edu">
+            <li>Exploratory Data Analysis (EDA) + visual storytelling</li>
+            <li>Data cleaning, transformation, and feature-ready datasets</li>
+            <li>Big Data processing with Spark (datasets, queries, transformations)</li>
+            <li>Clean, responsive web UI (HTML/CSS/JS)</li>
+          </ul>
+        </div>
+
+        <div class="card reveal up">
+          <h3>What I’m targeting</h3>
+          <p class="muted">
+            Entry-level roles / internships in Data Analytics, Data Science, or Big Data (Spark).
+            I’m building a portfolio that proves work, not just claims.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-wrap">
+      <h2 class="reveal left">Education</h2>
+      <p class="section-sub reveal left">Core CS + data subjects that support real projects.</p>
+
+      <div class="card reveal up">
+        <ul class="edu">
+          <li><strong>BCA (Final Year)</strong> - Dyal Singh College, Karnal (2023–2026)</li>
+          <li><strong>Key Subjects:</strong> Data Science Fundamentals, DBMS, Web Development, Software Testing, Cloud Computing</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-wrap">
+      <h2 class="reveal left">Skills (click to view proof)</h2>
+      <p class="section-sub reveal left">
+        Clicking a skill can open a certificate link / notes / proof. Upload your certificate PDFs/images in the repo and link them.
+      </p>
+
+      <ul class="skills">
+        <!-- SKILL ITEMS: click opens modal (you can replace links with your certificate files) -->
+        <li class="skill reveal left" data-type="skill"
+            data-title="Python"
+            data-desc="Used for EDA, data cleaning, analysis pipelines. Comfortable with writing analysis scripts and data transformations."
+            data-tags="Python,EDA,Scripting"
+            data-link="certificate-python.pdf">
+          <span>Python</span><span class="tag">Certificate</span>
+        </li>
+
+        <li class="skill reveal up" data-type="skill"
+            data-title="Data Analysis (Pandas/NumPy)"
+            data-desc="Handled filtering, grouping, aggregations, missing values, and feature-ready datasets."
+            data-tags="Pandas,NumPy,EDA"
+            data-link="certificate-data-analysis.pdf">
+          <span>Data Analysis (Pandas/NumPy)</span><span class="tag">Proof</span>
+        </li>
+
+        <li class="skill reveal left" data-type="skill"
+            data-title="Visualization (Matplotlib/Seaborn)"
+            data-desc="Built charts to explain patterns and support conclusions, not just pretty plots."
+            data-tags="Matplotlib,Seaborn,Charts"
+            data-link="certificate-visualization.pdf">
+          <span>Visualization (Matplotlib/Seaborn)</span><span class="tag">Proof</span>
+        </li>
+
+        <li class="skill reveal up" data-type="skill"
+            data-title="Big Data (Spark)"
+            data-desc="Worked with Spark for distributed processing: reading data, transformations, aggregations, and analysis workflows."
+            data-tags="Spark,Big Data,ETL"
+            data-link="certificate-spark.pdf">
+          <span>Big Data (Spark)</span><span class="tag">Certificate</span>
+        </li>
+
+        <li class="skill reveal left" data-type="skill"
+            data-title="MySQL"
+            data-desc="Schema basics, queries, joins, and CRUD operations used in projects."
+            data-tags="MySQL,DBMS,SQL"
+            data-link="certificate-mysql.pdf">
+          <span>MySQL</span><span class="tag">Proof</span>
+        </li>
+
+        <li class="skill reveal up" data-type="skill"
+            data-title="Web (HTML/CSS/JS)"
+            data-desc="Responsive pages + interactive components (scroll animations, modals, filters)."
+            data-tags="HTML,CSS,JavaScript"
+            data-link="certificate-web.pdf">
+          <span>Web (HTML/CSS/JS)</span><span class="tag">Proof</span>
+        </li>
+      </ul>
+      <p class="small muted" style="margin-top:12px;">
+        Note: If you don’t have a certificate for a skill, don’t fake it. Replace the link with a notes PDF or project proof.
+      </p>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-wrap">
+      <h2 class="reveal left">Projects (click to open details)</h2>
+      <p class="section-sub reveal left">
+        Filters + project modals. Add PDF, GitHub links, datasets, screenshots—whatever proof you have.
+      </p>
+
+      <div class="filters reveal up" id="filters">
+        <div class="chip active" data-filter="all">All</div>
+        <div class="chip" data-filter="data">Data Science</div>
+        <div class="chip" data-filter="bigdata">Big Data</div>
+        <div class="chip" data-filter="web">Web</div>
+      </div>
+
+      <div class="projects" id="projectGrid">
+        <!-- DATA SCIENCE -->
+        <div class="project reveal left" data-category="data" data-type="project"
+             data-title="Flight Delay Analysis"
+             data-desc="Real-world flight delay dataset analysis. Framed 10 analytical questions (on-time vs delayed, airline-wise performance, peak delay hours, etc.) and solved using Python (Pandas/NumPy) with Matplotlib/Seaborn visualizations."
+             data-tags="Python,Pandas,NumPy,Matplotlib,Seaborn,EDA"
+             data-link="flight-delay-analysis.pdf"
+             data-github="https://github.com/your-username/flight-delay-analysis">
+          <span class="cat">Data Science</span>
+          <h3>Flight Delay Analysis</h3>
+          <p>10 questions + code + graphs (EDA) on a real flight delay dataset.</p>
+          <div class="pillrow">
+            <span class="pill">Pandas</span><span class="pill">EDA</span><span class="pill">Visualization</span>
+          </div>
+        </div>
+
+        <!-- BIG DATA / SPARK -->
+        <div class="project reveal up" data-category="bigdata" data-type="project"
+             data-title="Big Data Analysis with Spark"
+             data-desc="Processed large datasets using Apache Spark. Performed transformations, aggregations, and analysis workflows. Built insights using Spark DataFrame operations and optimized processing steps."
+             data-tags="Spark,Big Data,DataFrames,ETL"
+             data-link="spark-bigdata.pdf"
+             data-github="https://github.com/your-username/spark-bigdata-project">
+          <span class="cat">Big Data</span>
+          <h3>Big Data (Spark) Project</h3>
+          <p>Distributed processing workflow using Spark: read → transform → aggregate → insights.</p>
+          <div class="pillrow">
+            <span class="pill">Spark</span><span class="pill">ETL</span><span class="pill">Aggregations</span>
+          </div>
+        </div>
+
+        <!-- JAVA + MYSQL -->
+        <div class="project reveal left" data-category="web" data-type="project"
+             data-title="Student Record Management System"
+             data-desc="Java + MySQL project implementing CRUD operations for student records. Focus: DB connectivity, backend logic, and structured data storage."
+             data-tags="Java,MySQL,CRUD,DBMS"
+             data-link="student-record-details.pdf"
+             data-github="https://github.com/your-username/student-record-system">
+          <span class="cat">Web/DB</span>
+          <h3>Student Record Management</h3>
+          <p>Java + MySQL CRUD system for managing student data.</p>
+          <div class="pillrow">
+            <span class="pill">Java</span><span class="pill">MySQL</span><span class="pill">CRUD</span>
+          </div>
+        </div>
+
+        <!-- PORTFOLIO -->
+        <div class="project reveal up" data-category="web" data-type="project"
+             data-title="Portfolio Website"
+             data-desc="Responsive portfolio built with HTML/CSS/JS. Includes scroll reveal animations, project filtering, modals for details, and scroll-based UI enhancements."
+             data-tags="HTML,CSS,JavaScript,UI"
+             data-link="https://your-username.github.io/portfolio/"
+             data-github="https://github.com/your-username/portfolio">
+          <span class="cat">Web</span>
+          <h3>Portfolio Website</h3>
+          <p>This site—responsive UI with interactive JS components and animations.</p>
+          <div class="pillrow">
+            <span class="pill">JS</span><span class="pill">Responsive</span><span class="pill">UX</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="small muted" style="margin-top:12px;">
+        Replace GitHub links with your real repos. If a PDF doesn’t exist yet, either upload it or remove that link in the modal.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-wrap">
+      <h2 class="reveal left">Contact</h2>
+      <p class="section-sub reveal left">Quick links. Keep it clean and direct.</p>
+
+      <div class="contact-grid">
+        <div class="card reveal left">
+          <h3>Reach me</h3>
+          <p>Email: <a href="mailto:payalsinghrajpoot09@gmail.com">payalsinghrajpoot09@gmail.com</a></p>
+          <p>LinkedIn: <a href="https://www.linkedin.com/in/rana-payal143" target="_blank" rel="noreferrer">linkedin.com/in/rana-payal143</a></p>
+          <p class="muted small">Tip: Add your GitHub profile link here too.</p>
+
+          <div class="modal-actions" style="margin-top:14px;">
+            <a class="linkbtn primary" href="resume.pdf" download>Download Resume</a>
+            <a class="linkbtn" href="#projects">View Projects</a>
+          </div>
+        </div>
+
+        <div class="card reveal up">
+          <h3>What I can share</h3>
+          <p class="muted">
+            - Project PDFs (questions + code + outputs)<br/>
+            - GitHub repositories for proof<br/>
+            - Certificates (only if real; otherwise notes/proof)
+          </p>
+        </div>
+      </div>
+
+      <footer class="muted small" style="text-align:center; margin-top:34px;">
+        © <span id="year"></span> Payal Rana | Built with HTML/CSS/JS
+      </footer>
+    </div>
+  </section>
+
+  <!-- Back to top -->
+  <button class="btn" id="toTop" aria-label="Back to top">↑ Top</button>
+
+  <!-- Modal -->
+  <div id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle">Title</h3>
+          <div class="meta" id="modalTags"></div>
+        </div>
+        <div class="modal-close" id="modalClose">✖</div>
+      </div>
+      <div class="modal-body">
+        <p id="modalDesc"></p>
+        <div class="modal-actions" id="modalActions"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Helpers =====
+    const $ = (s, root=document) => root.querySelector(s);
+    const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+
+    // ===== Year =====
+    $("#year").textContent = new Date().getFullYear();
+
+    // ===== Scroll progress bar =====
+    const progress = $("#progress");
+    window.addEventListener("scroll", () => {
+      const doc = document.documentElement;
+      const sc = doc.scrollTop;
+      const h = doc.scrollHeight - doc.clientHeight;
+      const p = h > 0 ? (sc / h) * 100 : 0;
+      progress.style.width = p.toFixed(2) + "%";
     });
-  });
 
-  const resumeBtn = document.querySelector('.btn');
-  resumeBtn.addEventListener('mouseenter', () => {
-    resumeBtn.style.transform = 'scale(1.1)';
-    resumeBtn.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3)';
-  });
-  resumeBtn.addEventListener('mouseleave', () => {
-    resumeBtn.style.transform = 'scale(1)';
-    resumeBtn.style.boxShadow = '';
-  });
+    // ===== Smooth scroll for nav (with offset because sticky topbar) =====
+    const topbar = $(".topbar");
+    const topbarHeight = () => topbar.getBoundingClientRect().height;
 
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.style.backgroundColor = '#f5f5f5';
-      card.style.transform = 'translateY(-5px)';
-      card.style.transition = 'all 0.3s ease';
+    $$("#nav a").forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = a.getAttribute("href");
+        const target = $(id);
+        if (!target) return;
+        const y = target.getBoundingClientRect().top + window.pageYOffset - (topbarHeight() + 8);
+        window.scrollTo({ top: y, behavior: "smooth" });
+      });
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.backgroundColor = '#fff';
-      card.style.transform = 'translateY(0)';
-    });
-  });
-</script>
 
+    // ===== Scrollspy (active nav) =====
+    const sections = ["#about","#education","#skills","#projects","#contact"].map(id => $(id));
+    const navLinks = $$("#nav a");
+    const spy = () => {
+      const y = window.scrollY + topbarHeight() + 40;
+      let current = sections[0]?.id || "";
+      sections.forEach(sec => {
+        if (!sec) return;
+        if (sec.offsetTop <= y) current = sec.id;
+      });
+      navLinks.forEach(l => {
+        l.classList.toggle("active", l.getAttribute("href") === "#" + current);
+      });
+    };
+    window.addEventListener("scroll", spy);
+    window.addEventListener("load", spy);
+
+    // ===== Reveal on scroll (side-in) =====
+    const revealEls = $$(".reveal");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) en.target.classList.add("show");
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+    revealEls.forEach(el => io.observe(el));
+
+    // ===== Parallax-ish header blobs =====
+    const b1 = $(".blob.b1"), b2 = $(".blob.b2");
+    window.addEventListener("scroll", () => {
+      const s = window.scrollY;
+      if (b1) b1.style.transform = `translate(${s * 0.03}px, ${s * 0.02}px)`;
+      if (b2) b2.style.transform = `translate(${-s * 0.02}px, ${-s * 0.03}px)`;
+    });
+
+    // ===== Back to top =====
+    const toTop = $("#toTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 700) toTop.classList.add("show");
+      else toTop.classList.remove("show");
+    });
+    toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    // ===== Highlights button =====
+    $("#viewHighlights").addEventListener("click", () => {
+      const target = $("#projects");
+      const y = target.getBoundingClientRect().top + window.pageYOffset - (topbarHeight() + 8);
+      window.scrollTo({ top: y, behavior: "smooth" });
+    });
+
+    // ===== Modal logic =====
+    const modal = $("#modal");
+    const modalTitle = $("#modalTitle");
+    const modalDesc = $("#modalDesc");
+    const modalTags = $("#modalTags");
+    const modalActions = $("#modalActions");
+    const modalClose = $("#modalClose");
+
+    function openModal({title, desc, tags=[], link="", github=""}) {
+      modalTitle.textContent = title || "Details";
+      modalDesc.textContent = desc || "";
+      modalTags.innerHTML = "";
+      modalActions.innerHTML = "";
+
+      tags.filter(Boolean).slice(0, 10).forEach(t => {
+        const el = document.createElement("span");
+        el.className = "pill";
+        el.textContent = t.trim();
+        modalTags.appendChild(el);
+      });
+
+      // Action buttons
+      if (link) {
+        const a = document.createElement("a");
+        a.className = "linkbtn primary";
+        a.href = link;
+        a.target = link.startsWith("http") ? "_blank" : "_blank";
+        a.rel = "noreferrer";
+        a.textContent = link.toLowerCase().endsWith(".pdf") ? "Open PDF" : "Open Link";
+        modalActions.appendChild(a);
+      }
+      if (github && github.includes("github.com")) {
+        const g = document.createElement("a");
+        g.className = "linkbtn";
+        g.href = github;
+        g.target = "_blank";
+        g.rel = "noreferrer";
+        g.textContent = "View GitHub";
+        modalActions.appendChild(g);
+      }
+      const closeBtn = document.createElement("button");
+      closeBtn.className = "linkbtn";
+      closeBtn.textContent = "Close";
+      closeBtn.addEventListener("click", closeModal);
+      modalActions.appendChild(closeBtn);
+
+      modal.style.display = "flex";
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(){
+      modal.style.display = "none";
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    modalClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.style.display === "flex") closeModal();
+    });
+
+    // Click handlers for skills/projects
+    $$(".skill, .project").forEach(el => {
+      el.addEventListener("click", () => {
+        const title = el.dataset.title || "Details";
+        const desc = el.dataset.desc || "";
+        const tags = (el.dataset.tags || "").split(",");
+        const link = el.dataset.link || "";
+        const github = el.dataset.github || "";
+        openModal({ title, desc, tags, link, github });
+      });
+    });
+
+    // ===== Project Filters =====
+    const chips = $$("#filters .chip");
+    const items = $$("#projectGrid .project");
+
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        chips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        const f = chip.dataset.filter;
+
+        items.forEach(card => {
+          const cat = card.dataset.category;
+          const show = (f === "all") || (cat === f);
+          card.style.display = show ? "" : "none";
+        });
+      });
+    });
+
+    // ===== Safety: avoid JS errors if missing files =====
+    // If a PDF/certificate file doesn't exist, it'll open 404 in a new tab.
+    // Better: upload the files OR remove the data-link for that item.
+  </script>
 </body>
 </html>
-
-
