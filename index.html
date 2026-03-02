@@ -1028,8 +1028,563 @@
     // If a PDF/certificate file doesn't exist, it'll open 404 in a new tab.
     // Better: upload the files OR remove the data-link for that item.
   </script>
+  <!-- =========================
+     OFFLINE PORTFOLIO CHATBOT (FINAL)
+========================= -->
+
+<style>
+  /* Chatbot launcher */
+  #pr-chat-launcher{
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 99999;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: #1f2f3f;
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.22);
+    display: grid;
+    place-items: center;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  #pr-chat-launcher:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 20px 52px rgba(0,0,0,0.26);
+  }
+
+  /* Chat window */
+  #pr-chat{
+    position: fixed;
+    right: 18px;
+    bottom: 84px;
+    z-index: 99999;
+    width: min(360px, calc(100vw - 36px));
+    height: 520px;
+    border-radius: 18px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 22px 70px rgba(0,0,0,0.26);
+    overflow: hidden;
+    display: none;
+  }
+  #pr-chat.open{ display:block; }
+
+  .pr-chat-head{
+    padding: 12px 14px;
+    background: linear-gradient(135deg, rgba(96,125,139,0.25), rgba(44,62,80,0.15));
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .pr-chat-title{
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .pr-chat-title b{ color:#22313f; font-size: 0.98rem; }
+  .pr-chat-title span{ color:#546e7a; font-size: 0.82rem; }
+  .pr-chat-x{
+    cursor:pointer;
+    font-weight: 900;
+    border-radius: 12px;
+    padding: 6px 10px;
+    border: 1px solid rgba(0,0,0,0.10);
+    background: rgba(255,255,255,0.75);
+    user-select:none;
+  }
+
+  .pr-chat-body{
+    height: calc(520px - 54px - 64px);
+    padding: 12px;
+    overflow: auto;
+  }
+
+  .pr-msg{
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .pr-msg.user{ justify-content: flex-end; }
+  .pr-bubble{
+    max-width: 82%;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+  .pr-msg.bot .pr-bubble{
+    background: #fff;
+    color:#22313f;
+    border-top-left-radius: 8px;
+  }
+  .pr-msg.user .pr-bubble{
+    background: #1f2f3f;
+    color:#fff;
+    border-top-right-radius: 8px;
+  }
+
+  .pr-quick{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .pr-chip{
+    cursor:pointer;
+    border-radius: 999px;
+    padding: 7px 10px;
+    font-weight: 800;
+    font-size: 0.82rem;
+    border: 1px solid rgba(0,0,0,0.10);
+    background: rgba(255,255,255,0.85);
+    transition: transform .15s ease;
+    user-select:none;
+  }
+  .pr-chip:hover{ transform: translateY(-2px); }
+
+  .pr-chat-foot{
+    height: 64px;
+    padding: 10px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    display:flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(253,250,246,0.9);
+  }
+  #pr-chat-input{
+    flex: 1;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.12);
+    padding: 0 12px;
+    outline: none;
+    font-size: 0.95rem;
+    background: rgba(255,255,255,0.9);
+  }
+  #pr-chat-send{
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.12);
+    padding: 0 14px;
+    font-weight: 900;
+    cursor:pointer;
+    background: #2c3e50;
+    color:#fff;
+  }
+</style>
+
+<button id="pr-chat-launcher" aria-label="Open chat">💬</button>
+
+<div id="pr-chat" aria-hidden="true">
+  <div class="pr-chat-head">
+    <div class="pr-chat-title">
+      <b>Payal’s Portfolio Bot</b>
+      <span>Projects • Skills • Spark • Resume • Contact</span>
+    </div>
+    <div class="pr-chat-x" id="pr-chat-close">✖</div>
+  </div>
+
+  <div class="pr-chat-body" id="pr-chat-body"></div>
+
+  <div class="pr-chat-foot">
+    <input id="pr-chat-input" type="text" placeholder="Ask: Spark project? Flight Delay? Contact?" />
+    <button id="pr-chat-send">Send</button>
+  </div>
+</div>
+
+<script>
+  // =========================
+  // OFFLINE "AI-LIKE" CHATBOT
+  // =========================
+
+  // --- Customize your details here (update links/filenames if needed) ---
+  const PROFILE = {
+    name: "Payal Rana",
+    role: "BCA Final Year | Data Science, Big Data (Spark), Web",
+    email: "payalsinghrajpoot09@gmail.com",
+    github: "https://github.com/ranaexists",
+    linkedin: "https://www.linkedin.com/in/rana-payal143/",
+    resume: "resume.pdf",
+
+    projects: [
+      {
+        title: "Flight Delay Analysis",
+        type: "Data Science",
+        proof: "flight-delay-analysis.pdf",
+        github: "",
+        summary:
+          "EDA on a real flight delay dataset with 10 analytical questions (on-time vs delayed, airline-wise delay patterns, peak hours, reasons). Tools: Python, Pandas, NumPy, Matplotlib, Seaborn."
+      },
+      {
+        title: "Big Data Analysis using Apache Spark",
+        type: "Big Data",
+        proof: "",
+        github: "https://github.com/ranaexists/spark-bigdata-analysis",
+        summary:
+          "Spark DataFrame workflow: filtering, transformations, aggregations, analytical queries. Focus on distributed processing and big data ETL concepts."
+      },
+      {
+        title: "Student Record Management System",
+        type: "Web/DB",
+        proof: "student-record-details.pdf",
+        github: "",
+        summary:
+          "Java + MySQL CRUD app. Focus: DB connectivity, backend logic, structured data storage."
+      }
+    ],
+
+    skills: [
+      { name: "Python", proof: "python-certificate.pdf" },
+      { name: "Data Science (CodeWithHarry)", proof: "data-science-certificate.pdf" },
+      { name: "Spark / Big Data", proof: "" },
+      { name: "MySQL", proof: "" },
+      { name: "HTML/CSS/JS", proof: "" }
+    ]
+  };
+
+  // --- Elements ---
+  const elChat = document.getElementById("pr-chat");
+  const elBody = document.getElementById("pr-chat-body");
+  const elLauncher = document.getElementById("pr-chat-launcher");
+  const elClose = document.getElementById("pr-chat-close");
+  const elInput = document.getElementById("pr-chat-input");
+  const elSend = document.getElementById("pr-chat-send");
+
+  // --- Session memory (in-page only) ---
+  const session = { name: "", lastTopic: "" };
+
+  // --- UI helpers ---
+  function openChat(){
+    elChat.classList.add("open");
+    elChat.setAttribute("aria-hidden","false");
+    if (!elBody.dataset.booted){
+      bootMessage();
+      elBody.dataset.booted = "1";
+    }
+    setTimeout(() => elInput.focus(), 60);
+  }
+  function closeChat(){
+    elChat.classList.remove("open");
+    elChat.setAttribute("aria-hidden","true");
+  }
+
+  function addMsg(text, who="bot"){
+    const row = document.createElement("div");
+    row.className = `pr-msg ${who}`;
+    const b = document.createElement("div");
+    b.className = "pr-bubble";
+    b.textContent = text;
+    row.appendChild(b);
+    elBody.appendChild(row);
+    elBody.scrollTop = elBody.scrollHeight;
+    return row;
+  }
+
+  function addTyping(){
+    const row = document.createElement("div");
+    row.className = "pr-msg bot";
+    const b = document.createElement("div");
+    b.className = "pr-bubble";
+    b.textContent = "typing…";
+    row.appendChild(b);
+    elBody.appendChild(row);
+    elBody.scrollTop = elBody.scrollHeight;
+    return row;
+  }
+
+  function removeRow(row){
+    if (row && row.parentNode) row.parentNode.removeChild(row);
+  }
+
+  function openLink(url){
+    if (!url) return;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+  
+  function scrollToSection(id){
+  const el = document.getElementById(id);
+  if (!el) return false;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  return true;
+}
+
+function scrollToProjects(){
+  closeChat();
+  setTimeout(() => scrollToSection("projects"), 120);
+}
+
+function scrollToSkills(){
+  closeChat();
+  setTimeout(() => scrollToSection("skills"), 120);
+}
+
+function scrollToContact(){
+  closeChat();
+  setTimeout(() => scrollToSection("contact"), 120);
+}
+
+function scrollToAbout(){
+  closeChat();
+  setTimeout(() => scrollToSection("about"), 120);
+}
+
+  function addQuick(chips){
+    const wrap = document.createElement("div");
+    wrap.className = "pr-quick";
+    chips.forEach(c => {
+      const chip = document.createElement("div");
+      chip.className = "pr-chip";
+      chip.textContent = c.label;
+      chip.addEventListener("click", () => {
+        if (c.url) openLink(c.url);
+else if (c.scrollTo) c.scrollTo();
+else handleUser(c.query || c.label, true);
+      });
+      wrap.appendChild(chip);
+    });
+    elBody.appendChild(wrap);
+    elBody.scrollTop = elBody.scrollHeight;
+  }
+
+  // --- "AI-like" brain (offline intents) ---
+  function normalize(s){
+    return (s || "")
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+  function matchAny(text, arr){ return arr.some(k => text.includes(k)); }
+
+  function findProjectByKeyword(text){
+    const t = normalize(text);
+    const map = [
+      { key: ["flight", "delay"], title: "Flight Delay Analysis" },
+      { key: ["spark", "big data", "bigdata", "pyspark"], title: "Big Data Analysis using Apache Spark" },
+      { key: ["student", "record", "mysql", "java"], title: "Student Record Management System" }
+    ];
+    for (const m of map){
+      if (m.key.some(k => t.includes(k))) return m.title;
+    }
+    return "";
+  }
+
+  function buildProjectReply(p){
+    const msg = `${p.title} (${p.type})\n\n${p.summary}`;
+    const chips = [];
+    if (p.proof) chips.push({ label: "Open Proof (PDF)", url: p.proof });
+    if (p.github) chips.push({ label: "Open GitHub", url: p.github });
+    chips.push({ label: "Resume", query: "resume" });
+    chips.push({ label: "Contact", query: "contact" });
+    return { msg, chips };
+  }
+
+  function handleBot(userText){
+    const t = normalize(userText);
+
+    // Name memory (simple)
+    if (matchAny(t, ["my name is", "i am ", "i'm ", "mera naam", "mai ", "me "])){
+      const guess = userText.replace(/my name is|i am|i'm|mera naam|mai|me/ig, "").trim();
+      if (guess && guess.length <= 30){
+        session.name = guess.split(" ")[0];
+        return {
+          msg: `Nice to meet you, ${session.name}. What would you like to explore?`,
+          chips: [
+  { label: "Projects", scrollTo: scrollToProjects },
+  { label: "Skills", scrollTo: scrollToSkills },
+  { label: "About", scrollTo: scrollToAbout },
+  { label: "Contact", scrollTo: scrollToContact },
+  { label: "Resume", query: "resume" }
+]
+        };
+      }
+    }
+
+    // Greeting
+    if (matchAny(t, ["hi", "hello", "hey", "hii", "namaste"])){
+      const who = session.name ? ` ${session.name}` : "";
+      return {
+        msg: `Hi${who}! I’m ${PROFILE.name}'s portfolio bot. What do you want to know?`,
+        chips: [
+          { label: "Projects", query: "show projects" },
+          { label: "Spark project", query: "spark project" },
+          { label: "Skills", query: "skills" },
+          { label: "Resume", query: "resume" },
+          { label: "Contact", query: "contact" }
+        ]
+      };
+    }
+
+    // Contact
+    if (matchAny(t, ["contact", "email", "linkedin", "github", "reach"])){
+      session.lastTopic = "contact";
+      return {
+        msg:
+`Contact:
+• Email: ${PROFILE.email}
+• GitHub: ${PROFILE.github}
+• LinkedIn: ${PROFILE.linkedin}`,
+        chips: [
+          { label: "Open GitHub", url: PROFILE.github },
+          { label: "Open LinkedIn", url: PROFILE.linkedin },
+          { label: "Download Resume", url: PROFILE.resume }
+        ]
+      };
+    }
+
+    // Resume
+    if (matchAny(t, ["resume", "cv"])){
+      session.lastTopic = "resume";
+      return {
+        msg: `You can download the resume here: ${PROFILE.resume}`,
+        chips: [
+          { label: "Download Resume", url: PROFILE.resume },
+          { label: "Projects", query: "show projects" }
+        ]
+      };
+    }
+
+    // Skills
+    if (matchAny(t, ["skills", "skill", "tech", "stack", "technology", "technologies"])){
+      session.lastTopic = "skills";
+      const lines = PROFILE.skills.map(s => `• ${s.name}${s.proof ? " (proof available)" : ""}`).join("\n");
+      return {
+        msg: `Key skills:\n${lines}\n\nAsk: "Python certificate" or "Data Science proof" to open supporting files.`,
+        chips: [
+          { label: "Python proof", query: "python certificate" },
+          { label: "Data Science proof", query: "data science proof" },
+          { label: "Spark project", query: "spark project" }
+        ]
+      };
+    }
+
+    // Skill proofs
+    if (matchAny(t, ["python certificate", "python proof", "python cert"])){
+      const s = PROFILE.skills.find(x => x.name.toLowerCase().includes("python"));
+      session.lastTopic = "python";
+      if (s?.proof) return { msg: "Opening Python certificate…", chips: [{label:"Open PDF", url: s.proof}] };
+      return { msg: "Python proof isn’t linked yet." };
+    }
+    if (matchAny(t, ["data science proof", "data science certificate", "codewithharry"])){
+      const s = PROFILE.skills.find(x => x.name.toLowerCase().includes("data science"));
+      session.lastTopic = "data-science";
+      if (s?.proof) return { msg: "Opening Data Science proof…", chips: [{label:"Open PDF", url: s.proof}] };
+      return { msg: "Data Science proof isn’t linked yet." };
+    }
+
+    // Projects list
+    if (matchAny(t, ["projects", "project", "work", "show projects"])){
+      session.lastTopic = "projects";
+      const lines = PROFILE.projects.map(p => `• ${p.title} (${p.type})`).join("\n");
+      return {
+        msg: `Projects:\n${lines}\n\nAsk: "Flight Delay", "Spark", or "Student Record" to open details.`,
+        chips: [
+          { label: "Flight Delay", query: "flight delay" },
+          { label: "Spark", query: "spark project" },
+          { label: "Student Record", query: "student record" }
+        ]
+      };
+    }
+
+    // Specific project
+    const title = findProjectByKeyword(t);
+    if (title){
+      session.lastTopic = title;
+      const p = PROFILE.projects.find(x => x.title === title);
+      if (p){
+        const r = buildProjectReply(p);
+        return { msg: r.msg, chips: r.chips };
+      }
+    }
+
+    // Fallback
+    return {
+      msg:
+`I can help with:
+• Projects (Flight Delay / Spark / Student Record)
+• Skills & supporting files
+• Resume and contact details`,
+      chips: [
+  { label: "Projects", scrollTo: scrollToProjects },
+  { label: "Skills", scrollTo: scrollToSkills },
+  { label: "Contact", scrollTo: scrollToContact },
+  { label: "Spark project", query: "spark project" }
+]
+    };
+  }
+
+  function handleUser(text, fromChip=false){
+    const cleaned = (text || "").trim();
+    if (!cleaned) return;
+
+    if (!fromChip) addMsg(cleaned, "user");
+
+    const typingRow = addTyping();
+    setTimeout(() => {
+      removeRow(typingRow);
+      const res = handleBot(cleaned);
+      addMsg(res.msg || "…", "bot");
+      if (res.chips && res.chips.length) addQuick(res.chips);
+    }, 350);
+  }
+
+  function bootMessage(){
+    addMsg(`Hi! I’m an offline assistant for ${PROFILE.name}.\nAsk me about projects, Spark work, skills, or how to contact.`, "bot");
+    addQuick([
+      { label: "Projects", query: "show projects" },
+      { label: "Spark project", query: "spark project" },
+      { label: "Skills", query: "skills" },
+      { label: "Resume", query: "resume" },
+      { label: "Contact", query: "contact" }
+    ]);
+  }
+
+  // --- Events ---
+  elLauncher.addEventListener("click", openChat);
+  elClose.addEventListener("click", closeChat);
+
+  elSend.addEventListener("click", () => {
+    handleUser(elInput.value);
+    elInput.value = "";
+    elInput.focus();
+  });
+
+  elInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter"){
+      handleUser(elInput.value);
+      elInput.value = "";
+    }
+  });
+
+  // Optional keyboard shortcuts:
+  // "/" opens chat, "Esc" closes chat
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "/" && document.activeElement !== elInput){
+      e.preventDefault();
+      openChat();
+    }
+    if (e.key === "Escape" && elChat.classList.contains("open")){
+      closeChat();
+    }
+  });
+</script>
+
+<!-- =========================
+     END CHATBOT (FINAL)
+========================= -->
 </body>
 </html>
+
 
 
 
